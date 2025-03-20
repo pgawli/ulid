@@ -29,22 +29,6 @@ const
                                       'Y', 'Z'); // Crockford's Base32
   ENCODING_LENGTH = Length(ENCODING);
 
-function CreateULID: string;
-
-  function UNIXTimeInMilliseconds: Int64;
-  var
-    ST: SystemTime;
-    DT: TDateTime;
-  begin
-    GetSystemTime(ST);
-    DT := EncodeDate(ST.wYear, ST.wMonth, ST.wDay) +
-          SysUtils.EncodeTime(ST.wHour, ST.wMinute, ST.wSecond, ST.wMilliseconds);
-    Result := DateUtils.MilliSecondsBetween(DT, UnixDateDelta);
-  end;
-
-begin
-  Result := EncodeTime(UNIXTimeInMilliseconds) + EncodeRandom;
-end;
 
 function EncodeRandom: string;
 const
@@ -76,5 +60,23 @@ begin
     Time := Trunc((Time - M) / ENCODING_LENGTH);
   end;
 end;
+
+function CreateULID: string;
+
+  function UNIXTimeInMilliseconds: Int64;
+  var
+    ST: SystemTime;
+    DT: TDateTime;
+  begin
+    GetSystemTime(ST);
+    DT := EncodeDate(ST.wYear, ST.wMonth, ST.wDay) +
+          SysUtils.EncodeTime(ST.wHour, ST.wMinute, ST.wSecond, ST.wMilliseconds);
+    Result := DateUtils.MilliSecondsBetween(DT, UnixDateDelta);
+  end;
+
+begin
+  Result := EncodeTime(UNIXTimeInMilliseconds) + EncodeRandom;
+end;
+
 
 end.
